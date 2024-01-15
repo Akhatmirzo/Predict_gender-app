@@ -86,27 +86,31 @@ predictForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = e.target[0];
 
-    mainWrapper.innerHTML = "<h1 class='text-center'>Loading...</h1>";
-    historyWrapper.innerHTML = "";
+    if (name.value) {
+        mainWrapper.innerHTML = "<h1 class='text-center'>Loading...</h1>";
+        historyWrapper.innerHTML = "";
 
-    genderPredict(`https://api.genderize.io/?name=${name.value}`)
-        .then((data) => {
-            name.value = "";
+        genderPredict(`https://api.genderize.io/?name=${name.value}`)
+            .then((data) => {
+                name.value = "";
 
-            let predict = data;
-            predict.gender == "male" ?
-                predict.image = "https://pics.craiyon.com/2023-07-28/69063d18c2664d0a9244666be0dc493b.webp"
-                :
-                predict.image = "https://img.freepik.com/free-photo/portrait-young-beautiful-woman-with-smoky-eyes-makeup-pretty-young-adult-girl-posing-studio-closeup-attractive-female-face_186202-4439.jpg?size=626&ext=jpg&ga=GA1.1.1412446893.1705276800&semt=ais"
+                let predict = data;
+                predict.gender == "male" ?
+                    predict.image = "https://pics.craiyon.com/2023-07-28/69063d18c2664d0a9244666be0dc493b.webp"
+                    :
+                    predict.image = "https://img.freepik.com/free-photo/portrait-young-beautiful-woman-with-smoky-eyes-makeup-pretty-young-adult-girl-posing-studio-closeup-attractive-female-face_186202-4439.jpg?size=626&ext=jpg&ga=GA1.1.1412446893.1705276800&semt=ais"
 
-            predicts.push(predict);
-            localStorage.setItem("predicts", JSON.stringify(predicts));
+                predicts.push(predict);
+                localStorage.setItem("predicts", JSON.stringify(predicts));
 
-            renderEl("main", predict);
-            renderEl("history", predicts);
-        }).catch((err) => {
-            console.log(err);
-        })
+                renderEl("main", predict);
+                renderEl("history", predicts);
+            }).catch((err) => {
+                console.log(err);
+            })
+    }else {
+        alert("Invalid Name");
+    }
 })
 
 function deleteEl(id) {
